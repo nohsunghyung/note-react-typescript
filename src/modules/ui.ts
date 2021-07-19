@@ -1,11 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+// state 초기 interface
 export interface UiStoreState {
   loadingBar: boolean;
 }
 
+// 초기 state
 const initialState: UiStoreState = {
-  loadingBar: false,
+  loadingBar: false
 };
 
 const uiStore = createSlice({
@@ -14,8 +16,8 @@ const uiStore = createSlice({
   reducers: {
     displayLoadingBar: (state, { payload }) => {
       state.loadingBar = payload;
-    },
-  },
+    }
+  }
 });
 
 export const { displayLoadingBar } = uiStore.actions;

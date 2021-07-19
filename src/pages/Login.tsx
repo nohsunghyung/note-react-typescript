@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../modules';
-import { LoginState, submitLogin } from '../modules/login';
+import { LoginState, submitLogin } from '../modules/form';
 
 // state 타입
 interface inputsInfo {
@@ -11,13 +11,11 @@ interface inputsInfo {
 
 const Login = () => {
   const dispatch = useDispatch();
-  // state 값을 가져올떄는 RootState 정리해주고 가져올 interface 정리
-  const { errorMsg } = useSelector<RootState, LoginState>(
-    (state) => state.login
-  );
+  // state 값을 가져올떄는 RootState 추가
+  const { errorMsg } = useSelector<RootState, LoginState>((state) => state.form);
   const [inputs, setInputs] = useState<inputsInfo>({
     username: '',
-    password: '',
+    password: ''
   });
   const { username, password } = inputs;
 
@@ -27,7 +25,7 @@ const Login = () => {
     const value = e.target.value;
     setInputs({
       ...inputs,
-      [name]: value,
+      [name]: value
     });
   };
 
@@ -43,23 +41,11 @@ const Login = () => {
           <div className="form">
             <div>
               <label htmlFor="username">id:</label>
-              <input
-                id="username"
-                type="text"
-                name="username"
-                value={username}
-                onChange={onChangeValue}
-              />
+              <input id="username" type="text" name="username" value={username} onChange={onChangeValue} />
             </div>
             <div>
               <label htmlFor="password">pw: </label>
-              <input
-                id="password"
-                type="password"
-                name="password"
-                value={password}
-                onChange={onChangeValue}
-              />
+              <input id="password" type="password" name="password" value={password} onChange={onChangeValue} />
             </div>
             <button type="button" className="btn" onClick={onSubmitForm}>
               로그인

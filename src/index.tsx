@@ -6,14 +6,12 @@ import { Router } from 'react-router-dom';
 import history from './utils/history';
 import { Provider } from 'react-redux';
 import rootReducer from './modules';
-import { configureStore, createStore } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import LoadingBar from './components/LoadingBar';
 
-const store = configureStore({
-  reducer: rootReducer,
+export const store = configureStore({
+  reducer: rootReducer
 });
-
-export default store;
 
 ReactDOM.render(
   <Provider store={store}>
