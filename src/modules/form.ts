@@ -28,33 +28,40 @@ const initialState: LoginState = {
   token: localStorage.getItem('token') || '',
   user: null,
   errorMsg: '',
-  isLoadingBar: false
+  isLoadingBar: false,
 };
 
 // 로그인 - 비동기 함수
-export const submitLogin = createAsyncThunk('form/submitLogin', async (userInfo: LoginUserInfo, { rejectWithValue }) => {
-  // 성공시
-  try {
-    const { data } = await Api.post('login', userInfo);
-    return data;
-  } catch (error) {
-    // 실패시
-    return rejectWithValue(error.response.data);
+export const submitLogin = createAsyncThunk(
+  'form/submitLogin',
+  async (userInfo: LoginUserInfo, { rejectWithValue }) => {
+    // 성공시
+    try {
+      const { data } = await Api.post('login', userInfo);
+      return data;
+    } catch (error) {
+      // 실패시
+      return rejectWithValue(error.response.data);
+    }
   }
-});
+);
 
 // 회원가입 - 비동기
-export const submitSignup = createAsyncThunk('form/submitSignup', async (userInfo: SignupUserInfo, { rejectWithValue }) => {
-  try {
-    const response = await Api.post('signup', userInfo);
-    if (response.status === 200) {
-      history.push('/');
+export const submitSignup = createAsyncThunk(
+  'form/submitSignup',
+  async (userInfo: SignupUserInfo, { rejectWithValue }) => {
+    try {
+      const response = await Api.post('signup', userInfo);
+      if (response.status === 200) {
+        // 회원가입 성공시 로그인화면으로
+        history.push('/');
+      }
+      return response.data;
+    } catch ({ response }) {
+      return rejectWithValue(response.data);
     }
-    return response.data;
-  } catch ({ response }) {
-    return rejectWithValue(response.data);
   }
-});
+);
 
 const form = createSlice({
   name: 'form',
@@ -66,7 +73,7 @@ const form = createSlice({
       state.user = null;
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-    }
+    },
   },
   // 비동기 함수 리듀서
   extraReducers: (builder) => {
@@ -87,9 +94,11 @@ const form = createSlice({
     });
     // 회원가입 성공시
     builder.addCase(submitSignup.fulfilled, (state, { payload }) => {
-      alert(`${payload.nickname} 님 회원가입을 축하드립니다.\n로그인페이지로 이동합니다.`);
+      alert(
+        `${payload.nickname} 님 회원가입을 축하드립니다.\n로그인페이지로 이동합니다.`
+      );
     });
-  }
+  },
 });
 
 export const { logout } = form.actions;

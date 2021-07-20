@@ -2,19 +2,22 @@ import React, { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import NoteItem from '../components/NoteItem';
 import { useDispatch, useSelector } from 'react-redux';
-import { getNoteData } from '../modules/note';
+import { getNoteData, onDeleteHandler } from '../modules/note';
 import { RootState } from '../modules';
 
+// 메인페이지
 const MainPage = () => {
   const dispatch = useDispatch();
   const { noteList } = useSelector((state: RootState) => state.note);
+  // 게시글 삭제
+  const onDelete = (_id: string): void => {
+    dispatch(onDeleteHandler(_id));
+  };
   useEffect(() => {
     // 노트 데이터 Api 호출
     dispatch(getNoteData());
     // didmount시 dispatch사용할경우 2번째 인자로 dispatch를 넘겨준다
   }, [dispatch]);
-
-  console.log('메인페이지 렌더');
   return (
     <div>
       <h1 className="page-header">학습노트 리스트</h1>
@@ -23,7 +26,11 @@ const MainPage = () => {
           {noteList.length ? (
             <div className="main list-container contents">
               <ul>
-                <NoteItem />
+                {noteList.map((item: any) => {
+                  return (
+                    <NoteItem key={item._id} list={item} onDelete={onDelete} />
+                  );
+                })}
               </ul>
             </div>
           ) : (

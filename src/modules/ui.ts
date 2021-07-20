@@ -7,17 +7,18 @@ export interface UiStoreState {
 
 // 초기 state
 const initialState: UiStoreState = {
-  loadingBar: false
+  loadingBar: false,
 };
 
 const uiStore = createSlice({
   name: 'uiStore',
   initialState,
   reducers: {
+    // 로딩바 리듀서
     displayLoadingBar: (state, { payload }) => {
       state.loadingBar = payload;
-    }
-  }
+    },
+  },
 });
 
 export const { displayLoadingBar } = uiStore.actions;

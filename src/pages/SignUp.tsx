@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { submitSignup } from '../modules/form';
-import history from '../utils/history';
 
 interface InputsState {
   username: string;
@@ -9,12 +8,13 @@ interface InputsState {
   nickname: string;
 }
 
+// 회원가입 페이지
 const SignUp = () => {
   const dispatch = useDispatch();
   const [inputs, setInputs] = useState<InputsState>({
     username: '',
     password: '',
-    nickname: ''
+    nickname: '',
   });
   // input value 변경 핸들러
   const onChangeValue = (e: any) => {
@@ -22,7 +22,7 @@ const SignUp = () => {
     const value = e.target.value;
     setInputs({
       ...inputs,
-      [name]: value
+      [name]: value,
     });
   };
   // 회원가입 폼전송
@@ -38,15 +38,33 @@ const SignUp = () => {
           <div className="form">
             <div>
               <label htmlFor="username">id:</label>
-              <input id="username" type="text" name="username" value={username} onChange={onChangeValue} />
+              <input
+                id="username"
+                type="text"
+                name="username"
+                value={username}
+                onChange={onChangeValue}
+              />
             </div>
             <div>
               <label htmlFor="password">pw: </label>
-              <input id="password" type="password" name="password" value={password} onChange={onChangeValue} />
+              <input
+                id="password"
+                type="password"
+                name="password"
+                value={password}
+                onChange={onChangeValue}
+              />
             </div>
             <div>
               <label htmlFor="nickname">nickname: </label>
-              <input id="nickname" type="text" name="nickname" value={nickname} onChange={onChangeValue} />
+              <input
+                id="nickname"
+                type="text"
+                name="nickname"
+                value={nickname}
+                onChange={onChangeValue}
+              />
             </div>
             <button type="button" className="btn" onClick={onSubmitForm}>
               회원 가입
