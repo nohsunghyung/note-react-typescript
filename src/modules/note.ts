@@ -1,10 +1,14 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import Api from '../api';
 import history from '../utils/history';
 
 // state interface
 interface NoteState {
   noteList: null | Array<number | string>;
+  noteItemInfo: {
+    title: string;
+    contents: string;
+  };
 }
 
 // 게시글 등록 interface
@@ -12,11 +16,6 @@ interface FormDataInfo {
   title: string;
   contents: string;
 }
-
-// 초기 state
-const initialState: NoteState = {
-  noteList: null,
-};
 
 // API 노트 가져오기
 export const getNoteData = createAsyncThunk(
@@ -73,6 +72,15 @@ export const getNoteItemInfo = createAsyncThunk(
   }
 );
 
+// 초기 state
+const initialState: NoteState = {
+  noteList: null,
+  noteItemInfo: {
+    title: '',
+    contents: ''
+  }
+};
+
 const note = createSlice({
   name: 'note',
   initialState,
@@ -83,18 +91,34 @@ const note = createSlice({
         history.goBack();
       }
     },
+    // value값 변경
+    onChangeValue: (state: any, { payload }) => {
+      const { name, value } = payload;
+      state.noteItemInfo[name] = value;
+    },
+    // 게시글 데이터 초기화
+    noteInfoClear: (state: any) => {
+      state.noteItemInfo = {
+        title: '',
+        contents: ''
+      };
+    }
   },
   extraReducers: (builder) => {
-    // 노트 가져오기 실행전
+    // 전체 게시글 가져오기 실행전
     builder.addCase(getNoteData.pending, (state, { payload }) => {});
-    // 노트 가져오기 성공
+    // 전체 게시글 가져오기 성공
     builder.addCase(getNoteData.fulfilled, (state, { payload }) => {
       state.noteList = payload;
     });
-    // 노트 가져오기 실패
+    // 전체 게시글 가져오기 실패
     builder.addCase(getNoteData.rejected, (state, { payload }) => {});
-  },
+    // 특정 게시글 정보 가져오기 성공
+    builder.addCase(getNoteItemInfo.fulfilled, (state, { payload }) => {
+      state.noteItemInfo = payload;
+    });
+  }
 });
 
-export const { cancelHandler } = note.actions;
+export const { cancelHandler, onChangeValue, noteInfoClear } = note.actions;
 export default note.reducer;
