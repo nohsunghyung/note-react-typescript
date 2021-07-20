@@ -4,6 +4,7 @@ import NoteItem from '../components/NoteItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { getNoteData, onDeleteHandler } from '../modules/note';
 import { RootState } from '../modules';
+import history from '../utils/history';
 
 // 메인페이지
 const MainPage = () => {
@@ -12,6 +13,10 @@ const MainPage = () => {
   // 게시글 삭제
   const onDelete = (_id: string): void => {
     dispatch(onDeleteHandler(_id));
+  };
+  // 수정페이지 이동
+  const moveUpdatePage = (_id: string): void => {
+    history.push(`/update/${_id}`);
   };
   useEffect(() => {
     // 노트 데이터 Api 호출
@@ -28,7 +33,12 @@ const MainPage = () => {
               <ul>
                 {noteList.map((item: any) => {
                   return (
-                    <NoteItem key={item._id} list={item} onDelete={onDelete} />
+                    <NoteItem
+                      key={item._id}
+                      list={item}
+                      onDelete={onDelete}
+                      moveUpdatePage={moveUpdatePage}
+                    />
                   );
                 })}
               </ul>

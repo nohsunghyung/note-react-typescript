@@ -5,6 +5,7 @@ import SignUp from '../pages/SignUp';
 import Main from '../pages/Main';
 import ErrorPage from '../pages/ErrorPage';
 import Write from '../pages/Write';
+import Update from '../pages/Update';
 
 interface RoutesProps {
   token: string;
@@ -17,10 +18,31 @@ const Routes = ({ token }: RoutesProps) => {
     <>
       <Switch>
         {/* 로그인, 메인페이지 */}
-        <Route exact path={'/'} render={(props: any) => (token ? <Main {...props} /> : <Login {...props} />)}></Route>
+        <Route
+          exact
+          path={'/'}
+          render={(props: any) =>
+            token ? <Main {...props} /> : <Login {...props} />
+          }
+        ></Route>
         {/* 회원가입 */}
-        <Route exact path={'/signup'} render={(props: any) => <SignUp {...props} />}></Route>
-        <Route exact path={'/write'} render={(props: any) => <Write {...props} />}></Route>
+        <Route
+          exact
+          path={'/signup'}
+          render={(props: any) => <SignUp {...props} />}
+        ></Route>
+        {/* 게시글 등록 */}
+        <Route
+          exact
+          path={'/write'}
+          render={(props: any) => <Write {...props} />}
+        ></Route>
+        {/* 게시글 수정 */}
+        <Route
+          exact
+          path={'/update/:id'}
+          render={(props: any) => <Update {...props} />}
+        ></Route>
         {/* 에러페이지 */}
         <Route path="*" component={ErrorPage}></Route>
       </Switch>

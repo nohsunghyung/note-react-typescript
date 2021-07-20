@@ -60,6 +60,19 @@ export const onDeleteHandler = createAsyncThunk(
   }
 );
 
+// 게시글 정보 가져오기
+export const getNoteItemInfo = createAsyncThunk(
+  'note/getNoteItemInfo',
+  async (_id: string, { rejectWithValue }) => {
+    try {
+      const { data } = await Api.get(`posts/${_id}`);
+      return data;
+    } catch ({ response }) {
+      return rejectWithValue(response.data.error);
+    }
+  }
+);
+
 const note = createSlice({
   name: 'note',
   initialState,
