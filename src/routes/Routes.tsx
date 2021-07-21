@@ -6,6 +6,7 @@ import Main from '../pages/Main';
 import ErrorPage from '../pages/ErrorPage';
 import Write from '../pages/Write';
 import Update from '../pages/Update';
+import Detail from '../pages/Detail';
 
 interface RoutesProps {
   token: string;
@@ -42,6 +43,12 @@ const Routes = ({ token }: RoutesProps) => {
           exact
           path={'/update/:id'}
           render={(props: any) => <Update {...props} />}
+        ></Route>
+        {/* 게시글 상세 */}
+        <Route
+          exact
+          path={'/detail/:id'}
+          render={(props: any) => <Detail {...props} />}
         ></Route>
         {/* 에러페이지 */}
         <Route path="*" component={ErrorPage}></Route>

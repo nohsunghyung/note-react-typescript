@@ -1,8 +1,13 @@
 import React, { useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
 import NoteItem from '../components/NoteItem';
 import { useDispatch, useSelector } from 'react-redux';
-import { getNoteData, onDeleteHandler } from '../modules/note';
+import {
+  getNoteData,
+  onDeleteHandler,
+  addMenuHandler,
+  menuController,
+  clear
+} from '../modules/note';
 import { RootState } from '../modules';
 import history from '../utils/history';
 
@@ -19,13 +24,20 @@ const MainPage = () => {
     history.push(`/update/${_id}`);
   };
   useEffect(() => {
+    // dispatch(menuController(false));
     // 노트 데이터 Api 호출
     dispatch(getNoteData());
     // didmount시 dispatch사용할경우 2번째 인자로 dispatch를 넘겨준다
+    dispatch(addMenuHandler('main'));
+    return () => {
+      // 페이지 이동할때 데이터 초기화
+      dispatch(clear());
+      dispatch(addMenuHandler(''));
+      dispatch(menuController(false));
+    };
   }, [dispatch]);
   return (
-    <div>
-      <h1 className="page-header">학습노트 리스트</h1>
+    <div className="main-contents">
       {noteList ? (
         <>
           {noteList.length ? (
@@ -45,16 +57,11 @@ const MainPage = () => {
             </div>
           ) : (
             <div className="empty-content">
-              <h3>등록된 학습노트가 없습니다.</h3>
+              <h3>등록된 메모가 없습니다.</h3>
             </div>
           )}
         </>
       ) : null}
-
-      <NavLink to={'/write'} className="create-button">
-        <i className="ion-md-add"></i>
-      </NavLink>
-      {/* <LoadingBar /> */}
     </div>
   );
 };

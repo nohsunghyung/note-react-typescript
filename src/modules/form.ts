@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import Api from '../api';
 import history from '../utils/history';
 
@@ -28,7 +28,7 @@ const initialState: LoginState = {
   token: localStorage.getItem('token') || '',
   user: null,
   errorMsg: '',
-  isLoadingBar: false,
+  isLoadingBar: false
 };
 
 // 로그인 - 비동기 함수
@@ -73,7 +73,8 @@ const form = createSlice({
       state.user = null;
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-    },
+      history.push('/');
+    }
   },
   // 비동기 함수 리듀서
   extraReducers: (builder) => {
@@ -86,7 +87,6 @@ const form = createSlice({
       state.user = user;
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
-      alert(`${user.nickname}님 환영합니다.`);
     });
     // 로그인 실패시
     builder.addCase(submitLogin.rejected, (state, { payload }) => {
@@ -98,7 +98,7 @@ const form = createSlice({
         `${payload.nickname} 님 회원가입을 축하드립니다.\n로그인페이지로 이동합니다.`
       );
     });
-  },
+  }
 });
 
 export const { logout } = form.actions;

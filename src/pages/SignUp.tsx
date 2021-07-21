@@ -14,7 +14,7 @@ const SignUp = () => {
   const [inputs, setInputs] = useState<InputsState>({
     username: '',
     password: '',
-    nickname: '',
+    nickname: ''
   });
   // input value 변경 핸들러
   const onChangeValue = (e: any) => {
@@ -22,7 +22,7 @@ const SignUp = () => {
     const value = e.target.value;
     setInputs({
       ...inputs,
-      [name]: value,
+      [name]: value
     });
   };
   // 회원가입 폼전송
@@ -32,43 +32,47 @@ const SignUp = () => {
   const { username, password, nickname } = inputs;
   return (
     <div>
-      <h1 className="page-header">회원가입</h1>
       <div className="contents">
         <div className="form-wrapper form-wrapper-sm">
           <div className="form">
             <div>
-              <label htmlFor="username">id:</label>
+              <label htmlFor="username">아이디</label>
               <input
                 id="username"
                 type="text"
                 name="username"
                 value={username}
                 onChange={onChangeValue}
+                placeholder="아이디를 입력해주세요."
               />
             </div>
             <div>
-              <label htmlFor="password">pw: </label>
+              <label htmlFor="password">비밀번호</label>
               <input
                 id="password"
                 type="password"
                 name="password"
                 value={password}
                 onChange={onChangeValue}
+                placeholder="패스워드를 입력해주세요."
               />
             </div>
             <div>
-              <label htmlFor="nickname">nickname: </label>
+              <label htmlFor="nickname">닉네임</label>
               <input
                 id="nickname"
                 type="text"
                 name="nickname"
                 value={nickname}
                 onChange={onChangeValue}
+                placeholder="닉네임을 입력해주세요."
               />
             </div>
-            <button type="button" className="btn" onClick={onSubmitForm}>
-              회원 가입
-            </button>
+            <div className="btn-wrap">
+              <button type="button" className="btn" onClick={onSubmitForm}>
+                회원 가입
+              </button>
+            </div>
           </div>
         </div>
       </div>

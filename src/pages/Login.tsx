@@ -18,7 +18,7 @@ const Login = () => {
   );
   const [inputs, setInputs] = useState<inputsInfo>({
     username: '',
-    password: '',
+    password: ''
   });
   const { username, password } = inputs;
 
@@ -28,7 +28,7 @@ const Login = () => {
     const value = e.target.value;
     setInputs({
       ...inputs,
-      [name]: value,
+      [name]: value
     });
   };
 
@@ -38,35 +38,38 @@ const Login = () => {
   };
   return (
     <div>
-      <h1 className="page-header">로그인</h1>
       <div className="contents">
         <div className="form-wrapper form-wrapper-sm">
           <div className="form">
             <div>
-              <label htmlFor="username">id:</label>
+              <label htmlFor="username">아이디</label>
               <input
                 id="username"
                 type="text"
                 name="username"
                 value={username}
                 onChange={onChangeValue}
+                placeholder="아이디를 입력해주세요."
               />
             </div>
             <div>
-              <label htmlFor="password">pw: </label>
+              <label htmlFor="password">비밀번호</label>
               <input
                 id="password"
                 type="password"
                 name="password"
                 value={password}
                 onChange={onChangeValue}
+                placeholder="패스워드를 입력해주세요."
               />
             </div>
-            <button type="button" className="btn" onClick={onSubmitForm}>
-              로그인
-            </button>
+            <div className="btn-wrap">
+              <button type="button" className="btn" onClick={onSubmitForm}>
+                로그인
+              </button>
+            </div>
           </div>
-          <p className="log">{errorMsg}</p>
+          <p className="error-log">{errorMsg}</p>
         </div>
       </div>
     </div>

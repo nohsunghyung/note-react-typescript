@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { cancelHandler, onSubmitFormHandler } from '../modules/note';
+import { cancelHandler, onSubmitFormHandler, clear } from '../modules/note';
 
 // 게시글 등록 페이지
 const Write = () => {
   const dispatch = useDispatch();
   const [inputs, setInputs] = useState({
     title: '',
-    contents: '',
+    contents: ''
   });
 
   // input value 변경 함수
@@ -16,7 +16,7 @@ const Write = () => {
     const value = e.target.value;
     setInputs({
       ...inputs,
-      [name]: value,
+      [name]: value
     });
   };
 
@@ -30,14 +30,19 @@ const Write = () => {
     dispatch(cancelHandler());
   };
 
+  useEffect(() => {
+    return () => {
+      dispatch(clear());
+    };
+  });
+
   const { title, contents } = inputs;
   return (
     <div className="contents">
-      <h1 className="page-header">학습노트 등록</h1>
       <div className="form-wrapper">
         <div>
           <div className="form">
-            <label htmlFor="Title">Title</label>
+            <label htmlFor="Title">제목</label>
             <input
               type="text"
               id="Title"
@@ -48,7 +53,7 @@ const Write = () => {
             />
           </div>
           <div className="form">
-            <label htmlFor="Contents">Contents</label>
+            <label htmlFor="Contents">내용</label>
             <textarea
               name="contents"
               id="Contents"
@@ -56,14 +61,15 @@ const Write = () => {
               value={contents}
               onChange={onChangeValue}
             ></textarea>
-            <div className="validation-chk">숫자체크</div>
           </div>
-          <button type="submit" className="btn" onClick={onSubmitForm}>
-            등록
-          </button>
-          <button type="button" className="btn outline" onClick={cancelForm}>
-            취소
-          </button>
+          <div className="btn-wrap">
+            <button type="button" className="btn" onClick={onSubmitForm}>
+              등록
+            </button>
+            <button type="button" className="btn outline" onClick={cancelForm}>
+              취소
+            </button>
+          </div>
         </div>
       </div>
     </div>

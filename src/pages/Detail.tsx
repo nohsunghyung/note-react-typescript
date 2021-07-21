@@ -25,7 +25,9 @@ const Update = (props: any) => {
 
   // 취소 버튼
   const cancelHandler = (): void => {
-    history.goBack();
+    if (window.confirm('취소하시겠습니까?')) {
+      history.goBack();
+    }
   };
 
   // 수정완료 버튼
@@ -40,14 +42,15 @@ const Update = (props: any) => {
       // 페이지 이동할때 데이터 초기화
       dispatch(clear());
     };
-  }, [dispatch, _id]);
+  }, [dispatch]);
   const { title, contents } = noteItemInfo;
   return (
     <div className="contents">
+      <h1 className="page-header">노트</h1>
       <div className="form-wrapper">
         <div>
           <div className="form">
-            <label htmlFor="Title">제목</label>
+            <label htmlFor="Title">Title</label>
             <input
               type="text"
               id="Title"
@@ -55,34 +58,30 @@ const Update = (props: any) => {
               placeholder="제목을 입력해주세요."
               value={title}
               onChange={onChangeValueHandler}
+              readOnly
             />
           </div>
           <div className="form">
-            <label htmlFor="Contents">내용</label>
+            <label htmlFor="Contents">Contents</label>
             <textarea
               name="contents"
               id="Contents"
               placeholder="내용을 입력해주세요."
               value={contents}
               onChange={onChangeValueHandler}
+              readOnly
             ></textarea>
           </div>
-          <div className="btn-wrap">
-            <button
-              type="button"
-              className="btn"
-              onClick={onSubmitUpdateFormHandler}
-            >
-              완료
-            </button>
-            <button
-              type="button"
-              className="btn outline"
-              onClick={cancelHandler}
-            >
-              취소
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="btn"
+            onClick={onSubmitUpdateFormHandler}
+          >
+            수정하기
+          </button>
+          <button type="button" className="btn outline" onClick={cancelHandler}>
+            목록으로
+          </button>
         </div>
         {/* <p className="log">에러</p> */}
       </div>

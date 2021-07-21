@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './index.scss';
 import App from './App';
 import { Router } from 'react-router-dom';
 import history from './utils/history';
@@ -16,7 +16,7 @@ export const store = configureStore({
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
-      <App />,
+      <App />
       <LoadingBar />
     </Router>
   </Provider>,

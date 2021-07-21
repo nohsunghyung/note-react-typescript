@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import Api from '../api';
 import history from '../utils/history';
 
@@ -9,6 +9,8 @@ interface NoteState {
     title: string;
     contents: string;
   };
+  isMenuOpen: boolean;
+  showAddMenuList: string;
 }
 
 // 게시글 등록 interface
@@ -36,7 +38,6 @@ export const onSubmitFormHandler = createAsyncThunk(
   async (formData: FormDataInfo, { rejectWithValue }) => {
     try {
       await Api.post('posts', formData);
-      alert('등록이 완료되었습니다.');
       history.push('/');
     } catch ({ response }) {
       alert(response.data.message);
@@ -50,7 +51,6 @@ export const onDeleteHandler = createAsyncThunk(
   async (_id: string, { dispatch, rejectWithValue }) => {
     try {
       await Api.delete(`posts/${_id}`);
-      alert('게시글이 삭제되었습니다.');
       // createAsyncThunk 안에서의 dispatch
       dispatch(getNoteData());
     } catch ({ response }) {
@@ -72,13 +72,31 @@ export const getNoteItemInfo = createAsyncThunk(
   }
 );
 
+// 게시글 수정하기
+export const onSubmitUpdateForm = createAsyncThunk(
+  'note/onSubmitUpdateForm',
+  async (_id: string, { getState, rejectWithValue }: any) => {
+    try {
+      const { note } = getState();
+      const { title, contents } = note.noteItemInfo;
+      const apiParams = { title, contents };
+      await Api.put(`posts/${_id}`, apiParams);
+      history.push('/');
+    } catch ({ response }) {
+      return rejectWithValue(response.data.error);
+    }
+  }
+);
+
 // 초기 state
 const initialState: NoteState = {
   noteList: null,
   noteItemInfo: {
     title: '',
     contents: ''
-  }
+  },
+  isMenuOpen: false,
+  showAddMenuList: ''
 };
 
 const note = createSlice({
@@ -87,21 +105,22 @@ const note = createSlice({
   reducers: {
     // 등록 취소
     cancelHandler: () => {
-      if (window.confirm('등록을 취소하시겠습니까?')) {
-        history.goBack();
-      }
+      history.goBack();
     },
     // value값 변경
     onChangeValue: (state: any, { payload }) => {
       const { name, value } = payload;
       state.noteItemInfo[name] = value;
     },
-    // 게시글 데이터 초기화
-    noteInfoClear: (state: any) => {
-      state.noteItemInfo = {
-        title: '',
-        contents: ''
-      };
+    // 데이터 초기화
+    clear: () => initialState,
+    // 메뉴 핸들러
+    menuController: (state: any, { payload }) => {
+      state.isMenuOpen = payload;
+    },
+    // 메모등록 메뉴 노출핸들러
+    addMenuHandler: (state: any, { payload }) => {
+      state.showAddMenuList = payload;
     }
   },
   extraReducers: (builder) => {
@@ -120,5 +139,11 @@ const note = createSlice({
   }
 });
 
-export const { cancelHandler, onChangeValue, noteInfoClear } = note.actions;
+export const {
+  cancelHandler,
+  onChangeValue,
+  clear,
+  menuController,
+  addMenuHandler
+} = note.actions;
 export default note.reducer;
